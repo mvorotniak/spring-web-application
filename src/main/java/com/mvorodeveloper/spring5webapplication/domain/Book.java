@@ -1,5 +1,6 @@
 package com.mvorodeveloper.spring5webapplication.domain;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -28,15 +29,14 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
         inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<>();
 
     public Book() {
     }
 
-    public Book(String name, int numOfPages, Set<Author> authors) {
+    public Book(String name, int numOfPages) {
         this.name = name;
         this.numOfPages = numOfPages;
-        this.authors = authors;
     }
 
     public Long getId() {
