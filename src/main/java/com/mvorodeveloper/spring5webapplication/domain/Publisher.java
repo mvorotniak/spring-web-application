@@ -1,11 +1,15 @@
 package com.mvorodeveloper.spring5webapplication.domain;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Publisher {
@@ -20,6 +24,14 @@ public class Publisher {
     private String state;
     private String zipCode;
 
+    /**
+     * The "publisher_id" acts as a foreign key and links the Publisher with the Books
+     * in a one-to-many relationship
+     */
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
+    private Set<Book> books = new HashSet<>();
+
     public Publisher() {
     }
 
@@ -29,6 +41,14 @@ public class Publisher {
         this.city = city;
         this.state = state;
         this.zipCode = zipCode;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -71,6 +91,14 @@ public class Publisher {
         this.zipCode = zipCode;
     }
 
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
+    }
+
     @Override
     public String toString() {
         return "Publisher{" +
@@ -88,7 +116,7 @@ public class Publisher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Publisher publisher = (Publisher) o;
-        return id.equals(publisher.id);
+        return Objects.equals(id, publisher.id);
     }
 
     @Override

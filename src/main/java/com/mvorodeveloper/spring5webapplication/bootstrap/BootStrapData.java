@@ -36,34 +36,41 @@ public class BootStrapData implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Creating some random Author, Books and Publishers
-        Author robert = new Author("Robert", "Martin");
-        Author eric = new Author("Eric", "Evans");
-
-        Book cleanCode = new Book("Clean Code", 1309);
-        Book ddd = new Book("Domain Driven Design", 2784);
+        System.out.println("[Bootstrap Data Initialization] Started in Bootstrap...");
 
         Publisher publisher = new Publisher("SFG Publishing", "Main Street", "Austin", "Texas", "3200");
 
-        // Adding relations
+        // The order in which we save the objects and implement a relationship matters.
+        // Incorrect order of saving may lead to a TransientPropertyValueException
+        publisherRepository.save(publisher);
+
+        Author robert = new Author("Robert", "Martin");
+        Book cleanCode = new Book("Clean Code", 1309);
+
         robert.getBooks().add(cleanCode);
         cleanCode.getAuthors().add(robert);
+        cleanCode.setPublisher(publisher);
+        publisher.getBooks().add(cleanCode);
+
+        authorRepository.save(robert);
+        bookRepository.save(cleanCode);
+        publisherRepository.save(publisher);
+
+        Author eric = new Author("Eric", "Evans");
+        Book ddd = new Book("Domain Driven Design", 2784);
 
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
+        ddd.setPublisher(publisher);
+        publisher.getBooks().add(ddd);
 
-        // Saving the Authors, Books and Publishers
-        authorRepository.save(robert);
         authorRepository.save(eric);
-
-        bookRepository.save(cleanCode);
         bookRepository.save(ddd);
-
         publisherRepository.save(publisher);
 
         // Printing the results
-        System.out.println("[Bootstrap Data Initialization] Started in Bootstrap...");
         System.out.println("[Bootstrap Data Initialized] Number of Books in Repository: " + bookRepository.count());
         System.out.println("[Bootstrap Data Initialized] Number of Publishers in Repository: " + publisherRepository.count());
+        System.out.println("[Bootstrap Data Initialized] Number of Books for Publisher: " + publisher.getBooks().size());
     }
 }
