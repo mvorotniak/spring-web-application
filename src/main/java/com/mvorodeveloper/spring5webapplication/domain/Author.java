@@ -1,5 +1,6 @@
 package com.mvorodeveloper.spring5webapplication.domain;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,15 +21,14 @@ public class Author {
     private String surname;
 
     @ManyToMany(mappedBy = "authors")
-    private Set<Book> books;
+    private Set<Book> books = new HashSet<>();
 
     public Author() {
     }
 
-    public Author(String name, String surname, Set<Book> books) {
+    public Author(String name, String surname) {
         this.name = name;
         this.surname = surname;
-        this.books = books;
     }
 
     public Long getId() {
