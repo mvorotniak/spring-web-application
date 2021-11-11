@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Book {
@@ -16,6 +19,14 @@ public class Book {
 
     private String name;
     private int numOfPages;
+
+    /**
+     * The "author_book" table is going to hold the many-to-many relationship between Books and Authors
+     * by linking the "book_id" with an "author_id"
+     */
+    @ManyToMany
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors;
 
     public Book() {
