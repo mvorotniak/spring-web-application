@@ -29,7 +29,8 @@ public class BookController {
         // Enhancing the Model with an attribute with a list of all the Books we have in the DB
         model.addAttribute("books", bookRepository.findAll());
 
-        // Return the View name
-        return "books";
+        // Return the View name. This will look whether there is a file under path "resources/templates/books" called "list"
+        // and return the Thymeleaf template
+        return "books/list";
     }
 }
